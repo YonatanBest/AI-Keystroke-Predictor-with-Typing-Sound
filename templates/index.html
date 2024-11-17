@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Key Prediction Model</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 50px;
+      }
+      #result {
+        margin-top: 20px;
+        font-size: 1.2em;
+        color: #333;
+        border: 1px solid #ccc;
+        padding: 10px;
+        display: inline-block;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 1em;
+        cursor: pointer;
+      }
+    </style>
+    <script>
+      let isRecording = false;
+
+      // Function to record audio
+      function recordAudio() {
+        if (isRecording) {
+          return; // Prevent multiple recordings
+        }
+        isRecording = true;
+
+        fetch("/record", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: "duration=2", // Duration of recording
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            isRecording = false; // Reset recording state
+            const resultDiv = document.getElementById("result");
+            if (data.error) {
+              resultDiv.innerHTML = `Error: ${data.error}`;
+            } else {
+              resultDiv.innerHTML = `Prediction: ${data.label} <br>
+                                           Probabilities: <br>
+                                           Spacebar: ${data.probabilities[1].toFixed(
+                                             2
+                                           )} <br>
+                                           Other Key: ${data.probabilities[0].toFixed(
+                                             2
+                                           )}`;
+            }
+          })
+          .catch((error) => {
+            isRecording = false; // Reset on error
+            console.error("Error:", error);
+          });
+      }
+
+      // Listen for keydown events
+      document.addEventListener("keydown", function (event) {
+        recordAudio(); // Trigger recording on any key press
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Key Prediction Model</h1>
+    <p>Press any key to record audio.</p>
+    <div id="result"></div>
+    <!-- Result display area -->
+  </body>
+</html>
