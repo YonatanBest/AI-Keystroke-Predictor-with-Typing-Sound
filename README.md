@@ -37,8 +37,8 @@ This project utilizes AI to predict keystrokes from typing sounds. By capturing 
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/YonatanBest/AI-Keystroke-Predictor.git
-cd AI-Keystroke-Predictor
+git clone https://github.com/YonatanBest/AI-Keystroke-Predictor-with-Typing-Sound.git
+cd AI-Keystroke-Predictor-with-Typing-Sound
 ```
 
 ## Usage
